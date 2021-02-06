@@ -38,7 +38,6 @@ public class SchoolModel {
                 String residence = rs.getString("RESIDENCE");
                 Person person = new Person(PersonalID,firstName,lastName,residence);
                 People.add(person);
-                System.out.println(person);
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -46,6 +45,55 @@ public class SchoolModel {
         }
 
         return People;
+    }
+    public Integer highestID(){
+        Integer maxID = null;
+        String sql = "SELECT MAX(PersonalID) as max_id FROM PersonDB;";
+        ResultSet rs;
+        try{
+            rs = stmt.executeQuery(sql);
+            while(rs!=null && rs.next()){
+                maxID = rs.getInt("max_id");
+            }
+        }catch(SQLException i){
+            i.printStackTrace();
+            System.out.println(i.getMessage());
+        }
+        return maxID;
+
+    }
+
+    public void addPerson(Integer PersonalID, String FirstName, String LastName, String RESIDENCE){
+        String sql = "INSERT INTO PersonDB (PersonalID,FirstName,LastName,RESIDENCE) VALUES (" + PersonalID + ",'" + FirstName +
+                "','" + LastName + "','" + RESIDENCE + "') ON DUPLICATE KEY UPDATE PersonalID=PersonalID;";
+        System.out.println(sql);
+        try{
+            stmt.executeUpdate(sql);
+        }catch (SQLException j){
+            j.printStackTrace();
+            System.out.println(j.getMessage());
+        }
+
+    }
+
+    public void addStudent(Integer PersonalID,String CurrentEd){
+        String sql = "INSERT INTO StudentDB (PersonalID, CurrentEd) VALUES (" + PersonalID + ",'" + CurrentEd + "');";
+        try{
+            stmt.executeUpdate(sql);
+        }catch (SQLException j){
+            j.printStackTrace();
+            System.out.println(j.getMessage());
+        }
+    }
+
+    public void addTeacher(Integer PersonalID, String Title){
+        String sql = "INSERT INTO TeacherDB (PersonalID, Title) VALUES (" + PersonalID + ",'" + Title + "');";
+        try{
+            stmt.executeUpdate(sql);
+        }catch (SQLException j){
+            j.printStackTrace();
+            System.out.println(j.getMessage());
+        }
     }
 
 }

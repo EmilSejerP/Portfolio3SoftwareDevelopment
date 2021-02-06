@@ -28,6 +28,13 @@ public class Controller {
         return peopleData;
     }
 
+    public Integer getMaxID(){
+        Integer maxID = model.highestID();
+        return maxID;
+    }
+
+
+
     public void setView(SchoolView view){
         this.view = view;
     }

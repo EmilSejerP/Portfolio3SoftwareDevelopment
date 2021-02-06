@@ -2,11 +2,15 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+
+import java.sql.SQLException;
 
 public class SchoolView {
 
@@ -24,6 +28,10 @@ public class SchoolView {
     Label Residence = new Label("Residence: ");
     Label Student = new Label("Student ");
     Label Teacher = new Label("Teacher ");
+    Label currentEd = new Label("Current Education: ");
+    Label teacherTitle = new Label("Title: ");
+    TextField TFCurrentEd = new TextField();
+    TextField TFTeacherTitle = new TextField();
     TextField TFFirstName = new TextField();
     TextField TFLastName = new TextField();
     TextField TFResidence = new TextField();
@@ -55,10 +63,16 @@ public class SchoolView {
         StartView.add(TFResidence,1,3);
         StartView.add(CBStudent,1,4);
         StartView.add(CBTeacher,1,5);
+        StartView.add(currentEd,2,4);
+        StartView.add(TFCurrentEd,3,4);
         StartView.add(CreatePerson,1,6);
+        StartView.add(teacherTitle,2,5);
+        StartView.add(TFTeacherTitle,3,5);
         StartView.add(TVPersons,1,7);
 
         TVPersons.getColumns().addAll(TCFirstName,TCLastName,TCResidence,TCPersonalID);
+
+        // Loader databasens informationer for People in i tableview:
 
         ObservableList<Person> people = control.getPeople();
         TVPersons.setItems(people);
@@ -75,6 +89,31 @@ public class SchoolView {
         TCPersonalID.setCellValueFactory(
                 new PropertyValueFactory<Person, Integer>("personalID")
         );
+
+        System.out.println(control.getMaxID());
+        //knap til at uploade en ny person:
+        CreatePerson.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Integer userID = control.getMaxID() + 1;
+                //Person person = new Person(userID,TFFirstName.getText(),TFLastName.getText(),TFResidence.getText());
+                //people.add(person);
+                if (CBStudent.isSelected() && TFCurrentEd != null){
+                    model.addStudent(userID,TFCurrentEd.getText());
+                }else if(CBStudent.isSelected() && TFCurrentEd == null){
+                    TFCurrentEd.setText("Please fill");
+                }
+                if (CBTeacher.isSelected() && teacherTitle != null){
+                    model.addTeacher(userID,TFTeacherTitle.getText());
+
+                }else if(CBStudent.isSelected() && TFCurrentEd == null){
+                    TFTeacherTitle.setText("Please fill");
+                }
+                model.addPerson(userID,TFFirstName.getText(),TFLastName.getText(),TFResidence.getText());
+                ObservableList<Person> people = control.getPeople();
+                TVPersons.setItems(people);
+            }
+        });
 
 
     }
