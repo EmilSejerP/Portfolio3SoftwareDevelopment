@@ -4,9 +4,11 @@ public class Person {
     private Integer personalID;
     private String firstName,lastName,residence;
 
-    public Person(Integer personalID, String firstName) {
+    public Person(Integer personalID, String firstName, String lastName, String residence) {
         this.personalID = personalID;
         this.firstName = firstName;
+        this.lastName = lastName;
+        this.residence = residence;
     }
 
     public Integer getPersonalID() {
@@ -52,6 +54,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return "ID: " + personalID + " First Name: " + firstName;
+        return "ID: " + personalID + " First Name: " + firstName + " Last Name: " + lastName + " Residence: " + residence;
     }
 }

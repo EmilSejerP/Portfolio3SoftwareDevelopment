@@ -25,9 +25,9 @@ public class SchoolModel {
         this.stmt = conn.createStatement();
     }
 
-    public ArrayList<Student> studentListQueryStmt(){
-        ArrayList<Student> Students = new ArrayList<Student>();
-        String sql = "SELECT * FROM PersonDB FULL OUTER JOIN StudentDB";
+    public ArrayList<Person> studentListQueryStmt(){
+        ArrayList<Person> People = new ArrayList<Person>();
+        String sql = "SELECT * FROM PersonDB;";
         ResultSet rs;
         try{
             rs = stmt.executeQuery(sql);
@@ -36,16 +36,16 @@ public class SchoolModel {
                 String firstName = rs.getString("FirstName");
                 String lastName = rs.getString("LastName");
                 String residence = rs.getString("RESIDENCE");
-                String CurrentED = rs.getString("CurrentED");
-                Student student = new Student(PersonalID,firstName,CurrentED);
-                Students.add(student);
+                Person person = new Person(PersonalID,firstName,lastName,residence);
+                People.add(person);
+                System.out.println(person);
             }
         }catch(SQLException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
 
-        return Students;
+        return People;
     }
 
 }

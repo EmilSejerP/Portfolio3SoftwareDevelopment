@@ -31,6 +31,7 @@ public class SchoolView {
     CheckBox CBTeacher = new CheckBox();
     Button CreatePerson = new Button("Add Person to Database");
     //------------------------------------------------------------
+
     public SchoolView(SchoolModel model, Controller control) {
         this.model = model;
         this.control = control;
@@ -58,11 +59,23 @@ public class SchoolView {
         StartView.add(TVPersons,1,7);
 
         TVPersons.getColumns().addAll(TCFirstName,TCLastName,TCResidence,TCPersonalID);
-        ObservableList<Person> people = FXCollections.observableArrayList();
 
-
-
+        ObservableList<Person> people = control.getPeople();
         TVPersons.setItems(people);
+
+        TCFirstName.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("firstName")
+        );
+        TCLastName.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("lastName")
+        );
+        TCResidence.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("residence")
+        );
+        TCPersonalID.setCellValueFactory(
+                new PropertyValueFactory<Person, Integer>("personalID")
+        );
+
 
     }
     public Parent asParent(){

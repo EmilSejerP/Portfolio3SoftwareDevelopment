@@ -1,6 +1,10 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -16,6 +20,12 @@ public class Controller {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+    }
+
+    public ObservableList<Person> getPeople(){
+        ArrayList<Person> people = model.studentListQueryStmt();
+        ObservableList<Person> peopleData = FXCollections.observableArrayList(people);
+        return peopleData;
     }
 
     public void setView(SchoolView view){
