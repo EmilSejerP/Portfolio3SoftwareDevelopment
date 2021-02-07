@@ -6,9 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 
@@ -38,7 +40,11 @@ public class SchoolView {
     CheckBox CBStudent = new CheckBox();
     CheckBox CBTeacher = new CheckBox();
     Button CreatePerson = new Button("Add Person to Database");
+    MenuBar menuBar = new MenuBar();
     //------------------------------------------------------------
+
+
+
 
     public SchoolView(SchoolModel model, Controller control) {
         this.model = model;
@@ -47,6 +53,7 @@ public class SchoolView {
     }
 
     private void createAndConfigure(){
+
         StartView = new GridPane();
         StartView.setMinSize(300,200);
         StartView.setPadding(new Insets(10,10,10,10));
@@ -100,15 +107,11 @@ public class SchoolView {
                 //people.add(person);
                 if (CBStudent.isSelected() && TFCurrentEd != null){
                     model.addStudent(userID,TFCurrentEd.getText());
-                }else if(CBStudent.isSelected() && TFCurrentEd == null){
-                    TFCurrentEd.setText("Please fill");
                 }
                 if (CBTeacher.isSelected() && teacherTitle != null){
                     model.addTeacher(userID,TFTeacherTitle.getText());
-
-                }else if(CBStudent.isSelected() && TFCurrentEd == null){
-                    TFTeacherTitle.setText("Please fill");
                 }
+
                 model.addPerson(userID,TFFirstName.getText(),TFLastName.getText(),TFResidence.getText());
                 ObservableList<Person> people = control.getPeople();
                 TVPersons.setItems(people);

@@ -9,4 +9,17 @@ public class Student extends Person{
         super(personalID, firstName, lastName, residence);
         CurrentED = currentED;
     }
+
+    public String getCurrentED() {
+        return CurrentED;
+    }
+
+    public void setCurrentED(String currentED) {
+        CurrentED = currentED;
+    }
+
+    @Override
+    public String toString() {
+        return super.getPersonalID().toString() + " " + super.getFirstName() + " " + super.getLastName();
+    }
 }
