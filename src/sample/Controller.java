@@ -39,20 +39,21 @@ public class Controller {
         return students;
     }
 
-    public ObservableList<String> getCourseNames(){
-        ArrayList<String> courses = model.courseNameQueryStmt();
-        ObservableList<String> courseNames = FXCollections.observableArrayList(courses);
-        return courseNames;
+    public ObservableList<Course> getCourses(){
+        ArrayList<Course> courses = model.courseNameQueryStmt();
+        ObservableList<Course> Courses = FXCollections.observableArrayList(courses);
+        return Courses;
     }
 
-    public ObservableList<String> getTeacherNames(){
-        ArrayList<String> teachers = model.teacherNameQueryStmt();
-        ObservableList<String> teacherNames = FXCollections.observableArrayList(teachers);
-        return teacherNames;
+    public ObservableList<StudentEnrollment> getEnrollments(){
+        ArrayList<StudentEnrollment> enrollments = model.queryEnrollmentData();
+        ObservableList<StudentEnrollment> Enrollments = FXCollections.observableArrayList(enrollments);
+        return Enrollments;
     }
 
     public ObservableList<Double> getGrades(){
         ArrayList<Double> Grades = new ArrayList<Double>();
+        Grades.add(null);
         Grades.add((double) 00);
         Grades.add((double) 02);
         Grades.add((double) 4);

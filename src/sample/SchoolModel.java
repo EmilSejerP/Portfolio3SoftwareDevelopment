@@ -25,6 +25,7 @@ public class SchoolModel {
         this.stmt = conn.createStatement();
     }
 
+    //-- Query to get every person in PersonDB --
     public ArrayList<Person> studentListQueryStmt() {
         ArrayList<Person> People = new ArrayList<Person>();
         String sql = "SELECT * FROM PersonDB;";
@@ -47,6 +48,7 @@ public class SchoolModel {
         return People;
     }
 
+    //-- Query to get highest current ID from datbase needed to create a new ID when a person is added --
     public Integer highestID() {
         Integer maxID = null;
         String sql = "SELECT MAX(PersonalID) as max_id FROM PersonDB;";
@@ -64,10 +66,10 @@ public class SchoolModel {
 
     }
 
+    // -- Adds a Person to PersonDB --
     public void addPerson(Integer PersonalID, String FirstName, String LastName, String RESIDENCE) {
         String sql = "INSERT INTO PersonDB (PersonalID,FirstName,LastName,RESIDENCE) VALUES (" + PersonalID + ",'" + FirstName +
                 "','" + LastName + "','" + RESIDENCE + "') ON DUPLICATE KEY UPDATE PersonalID=PersonalID;";
-        System.out.println(sql);
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException j) {
@@ -77,6 +79,7 @@ public class SchoolModel {
 
     }
 
+    //-- Adds a student to StudentDB --
     public void addStudent(Integer PersonalID, String CurrentEd) {
         String sql = "INSERT INTO StudentDB (PersonalID, CurrentEd) VALUES (" + PersonalID + ",'" + CurrentEd + "');";
         try {
@@ -87,6 +90,7 @@ public class SchoolModel {
         }
     }
 
+    //-- Adds a teacher to TeacherDB --
     public void addTeacher(Integer PersonalID, String Title) {
         String sql = "INSERT INTO TeacherDB (PersonalID, Title) VALUES (" + PersonalID + ",'" + Title + "');";
         try {
@@ -97,6 +101,7 @@ public class SchoolModel {
         }
     }
 
+    //-- Gets full student information, including Super information PersonDB & StudentDB --
     public ArrayList<Student> studentFullQueryStmt() {
         ArrayList<Student> Students = new ArrayList<Student>();
         String sql = "SELECT PersonDB.PersonalID, Firstname, LastName, RESIDENCE, StudentDB.CurrentED FROM PersonDB INNER JOIN StudentDB ON PersonDB.PersonalID = StudentDB.PersonalID;";
@@ -118,17 +123,21 @@ public class SchoolModel {
         }
         return Students;
     }
-    public ArrayList<String> courseNameQueryStmt() {
-        ArrayList<String> courses = new ArrayList<String>();
-        String sql = "SELECT Name, Semester FROM CourseDB;";
+
+    //-- Gets full course data in CourseDB --
+    public ArrayList<Course> courseNameQueryStmt() {
+        ArrayList<Course> courses = new ArrayList<Course>();
+        String sql = "SELECT * FROM CourseDB;";
         ResultSet rs;
         try {
             rs = stmt.executeQuery(sql);
             while (rs != null && rs.next()) {
-                String courseName= rs.getString("Name");
+                Integer CourseID = rs.getInt("CourseID");
                 String Semester = rs.getString("Semester");
-                String courseIdentifier = courseName + " " + Semester;
-                courses.add(courseIdentifier);
+                String Name = rs.getString("Name");
+                Integer TeacherID = rs.getInt("TeacherID");
+                Course course = new Course(CourseID,TeacherID,Semester,Name);
+                courses.add(course);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,26 +145,56 @@ public class SchoolModel {
         }
         return courses;
     }
-    public ArrayList<String> teacherNameQueryStmt() {
-        ArrayList<String> teacherNames = new ArrayList<String>();
-        String sql = "SELECT Firstname, LastName FROM PersonDB INNER JOIN TeacherDB ON PersonDB.PersonalID = TeacherDB.PersonalID;";
+
+    // -- Enroll Student uploads to StudentEnrollment Database --
+    public void enrollStudent(Integer PersonalID, Integer CourseID, Double Grade) {
+        String sql = "INSERT INTO StudentEnrollment (CourseID, StudentID,Grade) VALUES ("
+                + CourseID + "," + PersonalID + "," + Grade + ");";
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException j) {
+            j.printStackTrace();
+            System.out.println(j.getMessage());
+        }
+    }
+
+    public ArrayList<StudentEnrollment> queryEnrollmentData() {
+        ArrayList<StudentEnrollment> Enrollments = new ArrayList<StudentEnrollment>();
+        String sql = "SELECT " +
+                "StudentEnrollment.StudentID, " +
+                "PersonDB.FirstName, " +
+                "PersonDB.LastName, " +
+                "CourseID, " +
+                "StudentID, " +
+                "Grade " +
+                "FROM StudentEnrollment " +
+                "JOIN PersonDB " +
+                "ON PersonDB.PersonalID = StudentEnrollment.StudentID;";
+        System.out.println(sql);
         ResultSet rs;
         try {
             rs = stmt.executeQuery(sql);
             while (rs != null && rs.next()) {
-                String firstName = rs.getString("FirstName");
-                String lastName = rs.getString("LastName");
-                if(lastName == null)
-                    lastName = "Unknown";
-                String name = firstName + " " + lastName;
-                teacherNames.add(name);
+                Integer CourseID = rs.getInt("CourseID");
+                Integer PersonalID = rs.getInt("StudentID");
+                String StudentFirstName = rs.getString("FirstName");
+                String StudentLastName = rs.getString("LastName");
+                String StudentName = StudentFirstName + " " + StudentLastName;
+                //String CourseName = rs.getString("Name");
+                String CourseName = "course";
+                double Grade = rs.getDouble("Grade");
+
+                StudentEnrollment studentEnrollment = new StudentEnrollment(CourseID,PersonalID,Grade,StudentName,CourseName);
+                Enrollments.add(studentEnrollment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        return teacherNames;
+        System.out.println(Enrollments);
+        return Enrollments;
     }
+
 
 
 }

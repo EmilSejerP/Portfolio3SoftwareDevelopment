@@ -2,11 +2,15 @@ package sample;
 
 public class StudentEnrollment {
     Integer CourseID, StudentID;
-    Float Grade;
+    Double Grade;
+    String StudentName, CourseName;
 
-    public StudentEnrollment(Integer courseID, Integer studentID) {
+    public StudentEnrollment(Integer courseID, Integer studentID, Double grade, String studentName, String courseName) {
         CourseID = courseID;
         StudentID = studentID;
+        Grade = grade;
+        StudentName = studentName;
+        CourseName = courseName;
     }
 
     public Integer getCourseID() {
@@ -25,12 +29,28 @@ public class StudentEnrollment {
         StudentID = studentID;
     }
 
-    public Float getGrade() {
+    public Double getGrade() {
         return Grade;
     }
 
-    public void setGrade(Float grade) {
+    public void setGrade(Double grade) {
         Grade = grade;
+    }
+
+    public String getStudentName() {
+        return StudentName;
+    }
+
+    public void setStudentName(String studentName) {
+        StudentName = studentName;
+    }
+
+    public String getCourseName() {
+        return CourseName;
+    }
+
+    public void setCourseName(String courseName) {
+        CourseName = courseName;
     }
 
     @Override
@@ -39,6 +59,8 @@ public class StudentEnrollment {
                 "CourseID=" + CourseID +
                 ", StudentID=" + StudentID +
                 ", Grade=" + Grade +
+                ", StudentName='" + StudentName + '\'' +
+                ", CourseName='" + CourseName + '\'' +
                 '}';
     }
 }

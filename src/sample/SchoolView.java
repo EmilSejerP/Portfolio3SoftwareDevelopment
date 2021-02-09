@@ -43,9 +43,6 @@ public class SchoolView {
     MenuBar menuBar = new MenuBar();
     //------------------------------------------------------------
 
-
-
-
     public SchoolView(SchoolModel model, Controller control) {
         this.model = model;
         this.control = control;
@@ -97,14 +94,12 @@ public class SchoolView {
                 new PropertyValueFactory<Person, Integer>("personalID")
         );
 
-        System.out.println(control.getMaxID());
-        //knap til at uploade en ny person:
+        //-- Button uploads new person to PersonDB --
         CreatePerson.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Integer userID = control.getMaxID() + 1;
-                //Person person = new Person(userID,TFFirstName.getText(),TFLastName.getText(),TFResidence.getText());
-                //people.add(person);
+
                 if (CBStudent.isSelected() && TFCurrentEd != null){
                     model.addStudent(userID,TFCurrentEd.getText());
                 }
