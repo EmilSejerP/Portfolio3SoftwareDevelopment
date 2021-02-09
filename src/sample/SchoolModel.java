@@ -150,7 +150,6 @@ public class SchoolModel {
     public void enrollStudent(Integer CourseID, Integer PersonalID, Double Grade) {
         String sql = "INSERT INTO StudentEnrollment (CourseID, StudentID,Grade) VALUES ("
                 + CourseID + "," + PersonalID + "," + Grade + ");";
-        System.out.println(sql);
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
@@ -194,6 +193,16 @@ public class SchoolModel {
         return Enrollments;
     }
 
-
+    public void giveGrade(Integer CourseID, Integer StudentID,Double Grade){
+        String sql = "UPDATE StudentEnrollment SET Grade = " + Grade + " WHERE CourseID = " + CourseID + " AND StudentID = " + StudentID;
+        ResultSet rs;
+        System.out.println(sql);
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

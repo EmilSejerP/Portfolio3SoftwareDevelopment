@@ -104,7 +104,7 @@ public class CourseView {
             public void handle(ActionEvent actionEvent) {
                 Integer courseID = courseComboBox1.getValue().getCourseID();
                 Integer studentID = studentNamesComboBox1.getValue().getPersonalID();
-                Double studentGrade = gradesComboBox.getValue();
+                Double studentGrade = null;
                 model.enrollStudent(courseID,studentID,studentGrade);
 
                 ObservableList<StudentEnrollment> Enrollments = control.getEnrollments();
@@ -112,7 +112,19 @@ public class CourseView {
                 System.out.println(Enrollments);
             }
         });
+        buttonGradeStudent.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Integer courseID = courseComboBox2.getValue().getCourseID();
+                Integer studentID = studentNamesComboBox2.getValue().getPersonalID();
+                Double studentGrade = gradesComboBox.getValue();
+                model.giveGrade(courseID,studentID,studentGrade);
 
+                ObservableList<StudentEnrollment> Enrollments = control.getEnrollments();
+                TVEnrollment.setItems(Enrollments);
+                System.out.println(Enrollments);
+            }
+        });
     }
     public Parent asParent(){
         return CourseGrid;
