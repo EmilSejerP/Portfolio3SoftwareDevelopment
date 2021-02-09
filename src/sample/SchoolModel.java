@@ -58,9 +58,9 @@ public class SchoolModel {
             while (rs != null && rs.next()) {
                 maxID = rs.getInt("max_id");
             }
-        } catch (SQLException i) {
-            i.printStackTrace();
-            System.out.println(i.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return maxID;
 
@@ -72,9 +72,9 @@ public class SchoolModel {
                 "','" + LastName + "','" + RESIDENCE + "') ON DUPLICATE KEY UPDATE PersonalID=PersonalID;";
         try {
             stmt.executeUpdate(sql);
-        } catch (SQLException j) {
-            j.printStackTrace();
-            System.out.println(j.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
     }
@@ -84,9 +84,9 @@ public class SchoolModel {
         String sql = "INSERT INTO StudentDB (PersonalID, CurrentEd) VALUES (" + PersonalID + ",'" + CurrentEd + "');";
         try {
             stmt.executeUpdate(sql);
-        } catch (SQLException j) {
-            j.printStackTrace();
-            System.out.println(j.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -95,9 +95,9 @@ public class SchoolModel {
         String sql = "INSERT INTO TeacherDB (PersonalID, Title) VALUES (" + PersonalID + ",'" + Title + "');";
         try {
             stmt.executeUpdate(sql);
-        } catch (SQLException j) {
-            j.printStackTrace();
-            System.out.println(j.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -147,14 +147,15 @@ public class SchoolModel {
     }
 
     // -- Enroll Student uploads to StudentEnrollment Database --
-    public void enrollStudent(Integer PersonalID, Integer CourseID, Double Grade) {
+    public void enrollStudent(Integer CourseID, Integer PersonalID, Double Grade) {
         String sql = "INSERT INTO StudentEnrollment (CourseID, StudentID,Grade) VALUES ("
                 + CourseID + "," + PersonalID + "," + Grade + ");";
+        System.out.println(sql);
         try {
             stmt.executeUpdate(sql);
-        } catch (SQLException j) {
-            j.printStackTrace();
-            System.out.println(j.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -170,7 +171,6 @@ public class SchoolModel {
                 "FROM StudentEnrollment " +
                 "JOIN PersonDB " +
                 "ON PersonDB.PersonalID = StudentEnrollment.StudentID;";
-        System.out.println(sql);
         ResultSet rs;
         try {
             rs = stmt.executeQuery(sql);
@@ -191,7 +191,6 @@ public class SchoolModel {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        System.out.println(Enrollments);
         return Enrollments;
     }
 
